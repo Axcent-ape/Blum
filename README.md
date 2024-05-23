@@ -8,7 +8,7 @@ More crypto themes and softs in telegram: [ApeCryptor](https://t.me/+_xCNXumUNWJ
 2. Open `data/config.py` and put your api id and api hash
 
 ### Library Installation 📚
-`pip insrall -r requirements.txt` 
+`pip install -r requirements.txt` 
 
 ### Python Version 🐍
 Preferably python 3.6-3.9
