@@ -44,7 +44,12 @@ class BlumBot:
 
         r = await (await self.session.get("https://gateway.blum.codes/v1/friends/balance", proxy=self.proxy)).json()
         limit_invites = r.get('limitInvitation')
-        referral_link = 't.me/BlumCryptoBot/app?startapp=ref_' + r.get('referralToken')
+        referral_token = r.get('referralToken')
+        if referral_token is not None:
+            referral_link = 't.me/BlumCryptoBot/app?startapp=ref_' + referral_token
+        else:
+            logger.error(f"Thread {self.thread} | Referral token is None")
+            referral_link = None
 
         await asyncio.sleep(random.uniform(5, 7))
 
