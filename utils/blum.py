@@ -34,12 +34,12 @@ class BlumBot:
     def __init__(self, thread: int, session_name: str, phone_number: str, proxy: [str, None]):
         self.account = session_name + '.session'
         self.thread = thread
-        self.proxy = f"{config.PROXY_TYPES['REQUESTS']}://{proxy}" if proxy is not None else None
+        self.proxy = f"{config.PROXY['TYPE']['REQUESTS']}://{proxy}" if proxy is not None else None
         connector = ProxyConnector.from_url(self.proxy) if proxy else aiohttp.TCPConnector(verify_ssl=False)
 
         if proxy:
             proxy = {
-                "scheme": config.PROXY_TYPES['TG'],
+                "scheme": config.PROXY['TYPE']['TG'],
                 "hostname": proxy.split(":")[1].split("@")[1],
                 "port": int(proxy.split(":")[2]),
                 "username": proxy.split(":")[0],
