@@ -189,7 +189,7 @@ class BlumBot:
 
     async def start_game(self):
         resp = await self.session.post("https://game-domain.blum.codes/api/v1/game/play")
-        if resp.status == 502:
+        if resp.status == 200:
             return (await resp.json()).get("gameId")
         else:
             return False
@@ -236,7 +236,7 @@ class BlumBot:
 
         json_data = {"query": query, "referralToken": self.ref_token}
 
-        await self.session.options("https://gateway.blum.codes/v1/auth/provider/PROVIDER_TELEGRAM_MINI_APP")
+        # await self.session.options("https://gateway.blum.codes/v1/auth/provider/PROVIDER_TELEGRAM_MINI_APP")
 
         while True:
             resp = await self.session.post("https://gateway.blum.codes/v1/auth/provider/PROVIDER_TELEGRAM_MINI_APP", json=json_data)
