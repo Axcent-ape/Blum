@@ -63,16 +63,16 @@ class BlumBot:
                                              timeout=aiohttp.ClientTimeout(120))
 
     async def need_new_login(self):
-        if (await self.session.get("https://gateway.blum.codes/v1/user/me")).status == 200:
+        if (await self.session.get("https://user-domain.blum.codes/api/v1/user/me")).status == 200:
             return False
         else:
             return True
 
     @retry_async()
     async def friend_claim(self):
-        r = await (await self.session.get('https://gateway.blum.codes/v1/friends/balance')).json()
+        r = await (await self.session.get('https://user-domain.blum.codes/api/v1/friends/balance')).json()
         if r.get('amountForClaim') is not None and float(r.get('amountForClaim')) and r.get('canClaim'):
-            resp = await self.session.post("https://gateway.blum.codes/v1/friends/claim")
+            resp = await self.session.post("https://user-domain.blum.codes/api/v1/friends/claim")
             claim_balance = (await resp.json()).get("claimBalance")
             logger.success(f"Thread {self.thread} | {self.account} | Claim friends reward: {claim_balance}")
 
@@ -89,13 +89,13 @@ class BlumBot:
 
         await asyncio.sleep(random.uniform(5, 7))
 
-        r = await (await self.session.get("https://gateway.blum.codes/v1/friends/balance")).json()
+        r = await (await self.session.get("https://user-domain.blum.codes/api/v1/friends/balance")).json()
         referral_token = r.get('referralToken')
         referral_link = 't.me/BlumCryptoBot/app?startapp=ref_' + referral_token if referral_token else '-'
 
         await asyncio.sleep(random.uniform(5, 7))
 
-        r = await (await self.session.get("https://gateway.blum.codes/v1/friends?pageSize=1000")).json()
+        r = await (await self.session.get("https://user-domain.blum.codes/api/v1/friends?pageSize=1000")).json()
         referrals = len(r.get('friends'))
 
         await self.logout()
@@ -239,7 +239,7 @@ class BlumBot:
         # await self.session.options("https://gateway.blum.codes/v1/auth/provider/PROVIDER_TELEGRAM_MINI_APP")
 
         while True:
-            resp = await self.session.post("https://gateway.blum.codes/v1/auth/provider/PROVIDER_TELEGRAM_MINI_APP", json=json_data)
+            resp = await self.session.post("https://user-domain.blum.codes/api/v1/auth/provider/PROVIDER_TELEGRAM_MINI_APP", json=json_data)
 
             if resp.status == 520:
                 logger.warning(f"Thread {self.thread} | {self.account} | Relogin...")
