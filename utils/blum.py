@@ -148,11 +148,7 @@ class BlumBot:
 
     async def get_tasks(self):
         resp = await self.session.get('https://game-domain.blum.codes/api/v1/tasks')
-
-        tasks = []
-        for task_group in await resp.json():
-            for task in task_group['tasks']:
-                tasks.append(task)
+        tasks = [task for task_group in await resp.json() for sub_section in task_group['subSections'] for task in sub_section['tasks']]
 
         return tasks
 
